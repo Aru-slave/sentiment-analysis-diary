@@ -63,7 +63,6 @@ public class GlobalExceptionAdvice {
 
         final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
                 "Required request body is missing");
-
         return response;
     }
 
