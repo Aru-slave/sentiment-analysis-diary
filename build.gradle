@@ -53,8 +53,10 @@ dependencies {
 	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.1'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-	// OpenAI2
-//	implementation group: 'com.theokanning.openai-gpt3-java', name: 'client', version: '0.9.0'
+	//swagger
+//	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+//	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+
 }
 
 tasks.named('test') {
