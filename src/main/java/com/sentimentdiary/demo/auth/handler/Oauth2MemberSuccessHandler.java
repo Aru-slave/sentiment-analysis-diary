@@ -47,7 +47,8 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         //DB에서 email를 통해 사용자 정보 확인
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
-        if(!optionalMember.get().getRoles().get(0).equals("BAN")) {
+//        System.out.println("!!" + Arrays.toString(optionalMember.get().getRoles().toArray()));
+        if(optionalMember.get().getRoles().isEmpty() || !optionalMember.get().getRoles().get(0).equals("BAN")) {
 
 
             Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
@@ -112,17 +113,25 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         queryParams.add("initial", initialStatus); // 쿼리에 initial 전송
 
 
-
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("https")
-                //.path("/login/oauth2/code/google")
-                .host("ngether.xyz")
-                //.host("localhost")
-                //.port(3443)
-                .path("/google")
-                .queryParams(queryParams) //쿼리 파라미터로 access token, refresh token, initial 전송.
+                .scheme("http")
+                .host("localhost")
+//                .port(80)
+                .path("/receive-token.html")
+                .queryParams(queryParams)
                 .build()
                 .toUri();
+//        return UriComponentsBuilder
+//                .newInstance()
+//                .scheme("https")
+//                //.path("/login/oauth2/code/google")
+//                .host("ngether.xyz")
+//                //.host("localhost")
+//                //.port(3443)
+//                .path("/google")
+//                .queryParams(queryParams) //쿼리 파라미터로 access token, refresh token, initial 전송.
+//                .build()
+//                .toUri();
     }
 }

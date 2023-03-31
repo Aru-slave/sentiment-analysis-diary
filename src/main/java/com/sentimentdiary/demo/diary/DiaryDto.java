@@ -36,7 +36,7 @@ public class DiaryDto {
         private String nickName;
         private String title;
         private String content;
-        private LocalDateTime createDate;
-        private double sentimentScore;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 }

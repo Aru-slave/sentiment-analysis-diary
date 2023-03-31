@@ -1,14 +1,19 @@
 spring:
-  mvc:
-    hidden-method:
-      filter:
-        enabled: true
+#  mvc:
+#    hidden-method:
+#      filter:
+#        enabled: true
   freemarker:
     cache: false
   jpa:
-    defer-datasource-initialization: false
+#    defer-datasource-initialization: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
+#      ddl-auto: none
+    show-sql: true      # (2) SQL ?? ??
+    properties:
+      hibernate:
+        format_sql: true  # (3) SQL pretty print
   security:
     oauth2:
       client:
@@ -19,7 +24,6 @@ spring:
             scope:
               - email
               - profile
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://database-1.ct9qwzzh9uwy.ap-northeast-2.rds.amazonaws.com:13306/main?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -30,6 +34,8 @@ spring:
 
 
 
+chatgpt:
+  api-key: ${OPENAI_KEY}
 
 mail:
   address:
