@@ -26,6 +26,7 @@ public interface DiaryMapper {
         response.setTitle(diary.getTitle());
         response.setContent(diary.getContent());
         response.setCreateDate(diary.getCreateDate());
+        response.setSentimentScore(diary.getSentimentScore());
 
         return response;
     }
