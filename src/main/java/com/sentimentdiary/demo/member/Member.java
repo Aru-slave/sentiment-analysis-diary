@@ -2,6 +2,7 @@ package com.sentimentdiary.demo.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sentimentdiary.demo.auditable.Auditable;
 import com.sentimentdiary.demo.diary.Diary;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,17 +19,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Member {
+public class Member extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column()
+    @Column
     private String pw;
 
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(length = 20, nullable = false)
     private String nickName;
-
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -50,7 +50,6 @@ public class Member {
     }
 
 
-
     public Member(long memberId, String pw, String nickName, String email, String phoneNumber) {
         this.memberId = memberId;
         this.pw = pw;
@@ -58,8 +57,7 @@ public class Member {
         this.email = email;
     }
 
-
-
+    @Column
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 

@@ -36,6 +36,7 @@ public class DiaryDto {
         private String nickName;
         private String title;
         private String content;
-        private LocalDateTime createDate;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 }
