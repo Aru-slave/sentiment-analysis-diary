@@ -31,12 +31,17 @@ public class DiaryService {
             throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
         }
         diary.setMember(member);
-        diary.setEmotion(findEmotion(diary.getContent())); // 감정점수
-        diary.setKeywords(findKeywords(diary.getContent())); // 키워드
         member.addDiary(diary);
 
         return diaryRepository.save(diary);
     }
+    public Diary analyzeDiary(long diaryId) {
+        Diary diary = findDiary(diaryId);
+        diary.setEmotion(findEmotion(diary.getContent())); // 감정점수 분석
+        diary.setKeywords(findKeywords(diary.getContent())); // 키워드 분석
+        return diaryRepository.save(diary);
+    }
+
 
     public Diary updateDiary(Diary diary) {
         if (memberService.getLoginMember() == null) {
@@ -80,7 +85,7 @@ public class DiaryService {
     public Map<String, Integer> findKeywords(String question) {
         question = "\"" + question + "\" 키워드 추출 및 카운팅해줘";
         Map<String, Integer> keywords = new HashMap<>();
-        String[] str = question.split(": ")[2].split(" ");
+        String[] str = chatgptService.sendMessage(question).split(": ")[2].split(" ");
         for(int i=0; i<str.length; i++) {
             keywords.put(str[i++], Integer.parseInt(str[i]));
         }

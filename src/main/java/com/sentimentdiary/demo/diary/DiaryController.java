@@ -27,6 +27,14 @@ public class DiaryController {
 
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
+    //감정, 키워드 분석
+    @GetMapping("analyze/{diary-id}")
+    public ResponseEntity analyzeDiary(@PathVariable("diary-id") @Positive long diaryId) {
+
+        DiaryDto.Response response = diaryMapper.diaryToDiaryResponseDto(diaryService.analyzeDiary(diaryId));
+
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
 
     // 다이어리 단일조회
     @GetMapping("/{diary-id}")
