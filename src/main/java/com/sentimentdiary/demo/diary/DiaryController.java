@@ -7,13 +7,20 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.MediaSize;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.time.temporal.WeekFields.ISO;
 
 @RestController
 @RequestMapping("api/diary")
@@ -39,16 +46,16 @@ public class DiaryController {
     }
 
     //감정, 키워드 분석
-    @GetMapping("/analyze/{diary-id}")
-    @ApiOperation(value = "감정, 키워드 분석", notes = "다이어리의 감정 및 키워드를 분석한 결과를 반환합니다.")
-    public ResponseEntity<DiaryDto.Response> analyzeDiary(
-            @ApiParam(name = "diary-id", value = "다이어리 식별자", required = true, example = "1")
-            @PathVariable("diary-id") @Positive long diaryId) {
-
-        DiaryDto.Response response = diaryMapper.diaryToDiaryResponseDto(diaryService.analyzeDiary(diaryId));
-
-        return new ResponseEntity(response, HttpStatus.OK);
-    }
+//    @GetMapping("/analyze/{diary-id}")
+//    @ApiOperation(value = "감정, 키워드 분석", notes = "다이어리의 감정 및 키워드를 분석한 결과를 반환합니다.")
+//    public ResponseEntity<DiaryDto.Response> analyzeDiary(
+//            @ApiParam(name = "diary-id", value = "다이어리 식별자", required = true, example = "1")
+//            @PathVariable("diary-id") @Positive long diaryId) {
+//
+//        DiaryDto.Response response = diaryMapper.diaryToDiaryResponseDto(diaryService.analyzeDiary(diaryId));
+//
+//        return new ResponseEntity(response, HttpStatus.OK);
+//    }
 
     // 다이어리 단일조회
     @GetMapping("/{diary-id}")
@@ -62,9 +69,21 @@ public class DiaryController {
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
-    // 다이어리 부분조회
+    // 날짜 및 멤버별 다이어리 조회
+    @GetMapping("/date")
+    @ApiOperation(value = "날짜 및 멤버별 다이어리 단일 조회", notes = "날짜 및 멤버별 대한 다이어리들의 정보를 반환합니다.")
+    public ResponseEntity<List<DiaryDto.Response>> getDiariesByDate(
+            @ApiParam(name = "createdAt", value = "날짜", required = true, example = "2023-04-15")
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate createdAt) {
+        List<Diary> diaries = diaryService.findDiaries(createdAt);
+        List<DiaryDto.Response> response = diaryMapper.diariesToStudyResponseDto(diaries);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 멤버별 다이어리 부분조회
     @GetMapping
-    @ApiOperation(value = "다이어리 부분 조회", notes = "다이어리에 대한 정보를 페이지화해서 반환합니다.")
+    @ApiOperation(value = "멤버별 다이어리 부분 조회", notes = "멤버별로 다이어리에 대한 정보를 페이지화해서 반환합니다.")
     public ResponseEntity<MultiResponseDto> getDiaries(
             @ApiParam(name = "page", value = "현재 페이지", required = true, example = "1")
             @RequestParam int page,
@@ -80,7 +99,7 @@ public class DiaryController {
     // 다리어리 수정
     @PatchMapping("/{diary-id}")
     @ApiOperation(value = "다이어리 수정", notes = "다이어리를 수정합니다.")
-    public ResponseEntity<DiaryDto.Response> deleteDiary(
+    public ResponseEntity<DiaryDto.Response> patchDiary(
             @ApiParam(name = "diary-id", value = "다이어리 식별자", required = true, example = "1")
             @PathVariable("diary-id") @Positive long diaryId,
             @RequestBody DiaryDto.Patch patch) {
