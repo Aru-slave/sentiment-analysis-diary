@@ -1,0 +1,59 @@
+spring:
+#  mvc:
+#    hidden-method:
+#      filter:
+#        enabled: true
+  mvc: # Swagger 에러 해결 코드
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  freemarker:
+    cache: false
+  jpa:
+#    defer-datasource-initialization: false
+    hibernate:
+#      ddl-auto: create
+      ddl-auto: none
+    show-sql: true      # (2) SQL ?? ??
+    properties:
+      hibernate:
+        format_sql: true  # (3) SQL pretty print
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${G_CLIENT_ID}
+            clientSecret: ${G_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/main?serverTimezone=Asia/Seoul
+    username: main
+    password: chl9584!??
+#    url: jdbc:mysql://localhost:3306/diary_side_project?serverTimezone=Asia/Seoul
+#    username: root
+#    password: sinariari
+
+
+
+
+chatgpt:
+  api-key: ${OPENAI_KEY}
+
+mail:
+  address:
+    admin: admin@gmail.com
+jwt:
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes:  120
+  refresh-token-expiration-minutes: 28800
+logging.level:
+  org:
+    springframework:
+      web.servlet: debug
+server:
+ servlet:
+   encoding:
+     force-response: true
