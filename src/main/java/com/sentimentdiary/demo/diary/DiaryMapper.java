@@ -26,8 +26,11 @@ public interface DiaryMapper {
         response.setMemberId(diary.getMember().getMemberId());
         response.setNickName(diary.getMember().getNickName());
         response.setTitle(diary.getTitle());
+        response.setEmotion(diary.getEmotion());
+        response.setKeywords(diary.getKeywords());
         response.setContent(diary.getContent());
         response.setCreatedAt(diary.getCreatedAt());
+        response.setModifiedAt(diary.getModifiedAt());
 
         return response;
     }

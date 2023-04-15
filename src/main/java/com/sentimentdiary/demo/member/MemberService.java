@@ -34,7 +34,7 @@ public class MemberService {
         newMember.setPw(encryptedPassword);
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         newMember.setRoles(roles);
-        newMember.setNickName(member.getNickName());
+        newMember.setNickName(member.getEmail().split("@")[0]);
         newMember.setEmail(member.getEmail());
         newMember.setGoogle(false);
         Member savedMember = memberRepository.save(newMember);
