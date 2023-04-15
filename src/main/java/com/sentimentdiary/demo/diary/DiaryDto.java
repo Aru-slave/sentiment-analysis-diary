@@ -28,6 +28,7 @@ public class DiaryDto {
     }
 
     @Getter
+    @AllArgsConstructor
     @ApiModel("Diary Patch")
     public static class Patch {
         @ApiModelProperty(notes = "다이어리 식별자", required = true, example = "1")

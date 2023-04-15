@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 
 public class MemberDto {
     @Getter
+    @AllArgsConstructor
     @NoArgsConstructor
     @ApiModel("Member Post")
     public static class Post{
@@ -28,6 +29,7 @@ public class MemberDto {
     }
 
     @Getter
+    @Setter
     @ApiModel("Member Patch")
     public static class Patch{
         @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*\\W)(?=\\S+$).{8,}", message = "비밀번호는 8자 이상, 영문 소문자, 숫자, 특수문자를 적어도 1개 포함시켜주세요")
@@ -41,6 +43,7 @@ public class MemberDto {
     }
 
     @Getter
+    @Setter
     @NoArgsConstructor
     @ApiModel("Member Check")
     public static class Check {
