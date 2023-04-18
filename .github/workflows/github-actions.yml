@@ -18,7 +18,7 @@ jobs:
     
     # Docker 이미지 Build (2)
     - name: docker image build
-      run: docker build -t lucaskang134/boot-prac-ci .
+      run: docker build -t choijihyeon/diary .
     
     # DockerHub Login (3)
     - name: docker login 
