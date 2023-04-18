@@ -33,6 +33,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.projectlombok:lombok'
 	//runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'
