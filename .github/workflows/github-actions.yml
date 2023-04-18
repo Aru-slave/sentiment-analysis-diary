@@ -29,7 +29,7 @@ jobs:
 
     # Docker Hub push (4)
     - name: docker Hub push
-      run: docker push lucaskang134/boot-prac-ci
+      run: docker push choijihyeon/diary
       
     # GET GitHub IP (5)
     - name: get GitHub IP 
@@ -59,9 +59,9 @@ jobs:
         port: ${{ secrets.EC2_SSH_PORT }}
         timeout: 60s
         script: |
-          sudo docker stop boot-prac-ci
-          sudo docker rm boot-prac-ci
-          sudo docker run -it -d -p 8080:8080 --name boot-prac-ci lucaskang134/boot-prac-ci
+          sudo docker stop diary
+          sudo docker rm diary
+          sudo docker run -it -d -p 8080:8080 --name diary choijihyeon/diary
     
     # REMOVE Github IP FROM security group (9)
     - name: Remove IP FROM security group
