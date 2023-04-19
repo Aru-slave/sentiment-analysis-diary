@@ -18,7 +18,7 @@ jobs:
     
     # Docker 이미지 Build (2)
     - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/diary .
+      run: docker build -t choijihyeon/diary .
     
     # DockerHub Login (3)
     - name: Docker Hub 로그인 # (3)
@@ -29,7 +29,7 @@ jobs:
 
     # Docker Hub push (4)
     - name: docker Hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/diary
+      run: docker push choijihyeon/diary
       
     # GET GitHub IP (5)
     - name: get GitHub IP 
@@ -61,7 +61,7 @@ jobs:
         script: |
           sudo docker stop diary
           sudo docker rm diary
-          sudo docker run -it -d -p 8080:8080 --name diary ${{ secrets.DOCKERHUB_USERNAME }}/diary
+          sudo docker run -it -d -p 8080:8080 --name diary choijihyeon/diary
     
     # REMOVE Github IP FROM security group (9)
     - name: Remove IP FROM security group
