@@ -16,9 +16,11 @@ jobs:
     - name: Spring Boot Build
       run: ./gradlew clean build --exclude-task test
     
-    # Docker 이미지 Build (2)
-    - name: docker image build
-      run: docker build -t choijihyeon/diary .
+    # Docker Compose (2)
+    - name: Docker Compose
+      run: |
+        docker-compose up --build -d
+        docker-compose down
     
     # DockerHub Login (3)
     - name: Docker Hub 로그인 # (3)
