@@ -110,7 +110,10 @@ public class DiaryService {
     public Map<String, Integer> findKeywords(String question) {
         question = "\"" + question + "\" 키워드 추출 및 카운팅해줘";
         Map<String, Integer> keywords = new HashMap<>();
-        String[] str = chatgptService.sendMessage(question).split("카운팅:\n\n")[1].split("\n");
+        String result = chatgptService.sendMessage(question);
+        String[] str = result.contains("카운팅:\n\n") ?
+                result.split("카운팅:\n\n")[1].split("\n")
+                : result.split("카운팅: ")[1].split(", ");
         for(int i=0; i<str.length; i++) {
             String[] tmp = str[i].split(": ");
             keywords.put(tmp[0], Integer.parseInt(tmp[1]));
@@ -121,10 +124,15 @@ public class DiaryService {
 
     // 감정점수
     public int findEmotion(String question) {
-        question = "\"" + question + "\" -10 ~ +10 사이로 감정점수화";
-        return  (int) Arrays.stream(chatgptService.sendMessage(question).split("\n")[2].split(", "))
+        question = "\"" + question + "\" -10 ~ +10 사이로 감정점수화해서 점수만 알려줘";
+        String result = chatgptService.sendMessage(question);
+        return  (int) Arrays.stream(result.split("\n")[2].split(", "))
                 .mapToInt(Integer::parseInt)
                 .average()
                 .getAsDouble();
+//        return  (int) Arrays.stream(chatgptService.sendMessage(question).split("\n")[2].split(", "))
+//                .mapToInt(Integer::parseInt)
+//                .average()
+//                .getAsDouble();
     }
 }
