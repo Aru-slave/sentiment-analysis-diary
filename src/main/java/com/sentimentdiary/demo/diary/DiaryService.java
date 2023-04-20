@@ -36,6 +36,15 @@ public class DiaryService {
 
         return diaryRepository.save(diary);
     }
+    public DiaryDto.Response createDiary2(Diary diary) {
+        DiaryDto.Response response = new DiaryDto.Response();
+        response.setTitle(diary.getTitle());
+        response.setContent(diary.getContent());
+        response.setEmotion(findEmotion(diary.getContent())); // 감정점수 분석
+        response.setKeywords(findKeywords(diary.getContent())); // 키워드 분석
+
+        return response;
+    }
 //    public Diary analyzeDiary(long diaryId) {
 //        Diary diary = findDiary(diaryId);
 //        diary.setEmotion(findEmotion(diary.getContent())); // 감정점수 분석
@@ -108,14 +117,13 @@ public class DiaryService {
 
     // 키워드 추출하기
     public Map<String, Integer> findKeywords(String question) {
-        question = "\"" + question + "\" 키워드 추출 및 카운팅해줘";
+        question = "\"" + question + "\" 키워드 추출한 후 카운팅해줘, 형식은 \"키워드 : 개수\n\"";
         Map<String, Integer> keywords = new HashMap<>();
         String result = chatgptService.sendMessage(question);
-        String[] str = result.contains("카운팅:\n\n") ?
-                result.split("카운팅:\n\n")[1].split("\n")
-                : result.split("카운팅: ")[1].split(", ");
+        String[] str = result.contains("\n\n") ?
+                result.split("\n\n")[1].split("\n") : result.split("\n");
         for(int i=0; i<str.length; i++) {
-            String[] tmp = str[i].split(": ");
+            String[] tmp = str[i].split(" : ");
             keywords.put(tmp[0], Integer.parseInt(tmp[1]));
         }
 
@@ -126,10 +134,31 @@ public class DiaryService {
     public int findEmotion(String question) {
         question = "\"" + question + "\" -10 ~ +10 사이로 감정점수화해서 점수만 알려줘";
         String result = chatgptService.sendMessage(question);
-        return  (int) Arrays.stream(result.split("\n")[2].split(", "))
-                .mapToInt(Integer::parseInt)
-                .average()
-                .getAsDouble();
+        int emotion = 0;
+        if(result.contains("-10")) emotion = -10;
+        else if(result.contains("-9")) emotion = -9;
+        else if(result.contains("-8")) emotion = -8;
+        else if(result.contains("-7")) emotion = -7;
+        else if(result.contains("-6")) emotion = -6;
+        else if(result.contains("-5")) emotion = -5;
+        else if(result.contains("-4")) emotion = -4;
+        else if(result.contains("-3")) emotion = -3;
+        else if(result.contains("-2")) emotion = -2;
+        else if(result.contains("-1")) emotion = -1;
+        else if(result.contains("0")) emotion = 0;
+        else if(result.contains("10")) emotion = 10;
+        else if(result.contains("9")) emotion = 9;
+        else if(result.contains("8")) emotion = 8;
+        else if(result.contains("7")) emotion = 7;
+        else if(result.contains("6")) emotion = 6;
+        else if(result.contains("5")) emotion = 5;
+        else if(result.contains("4")) emotion = 4;
+        else if(result.contains("3")) emotion = 3;
+        else if(result.contains("2")) emotion = 2;
+        else if(result.contains("1")) emotion = 1;
+
+        return emotion;
+
 //        return  (int) Arrays.stream(chatgptService.sendMessage(question).split("\n")[2].split(", "))
 //                .mapToInt(Integer::parseInt)
 //                .average()
