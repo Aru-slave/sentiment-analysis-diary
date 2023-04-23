@@ -61,6 +61,7 @@ jobs:
         script: |
           sudo docker stop diary
           sudo docker rm diary
+          sudo docker pull choijihyeon/diary
           sudo docker run -it -d \
             -p 8080:8080 \
             -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} \
