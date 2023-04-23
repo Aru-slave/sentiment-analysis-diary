@@ -59,8 +59,8 @@ jobs:
         port: ${{ secrets.EC2_SSH_PORT }}
         timeout: 60s
         script: |
-          sudo docker stop diary
-          sudo docker rm diary
+          sudo docker stop $(docker ps -q --filter ancestor=choijihyeon/diary)
+          sudo docker rm $(docker ps -a -q --filter ancestor=choijihyeon/diary)
           sudo docker pull choijihyeon/diary
           sudo docker run -it -d \
             -p 8080:8080 \
