@@ -62,9 +62,7 @@ jobs:
           sudo docker stop $(docker ps -q --filter ancestor=choijihyeon/diary)
           sudo docker rm $(docker ps -a -q --filter ancestor=choijihyeon/diary)
           sudo docker pull choijihyeon/diary
-          sudo docker run -it -d \
-            -p 8080:8080 \
-            choijihyeon/diary
+          sudo docker run -it -d \ -p 8080:8080 \ -e JWT_SECRET_KEY=$JWT_SECRET_KEY \ -e OPENAI_KEY=$OPENAI_KEY \ choijihyeon/diary
     
     # REMOVE Github IP FROM security group (9)
     - name: Remove IP FROM security group
