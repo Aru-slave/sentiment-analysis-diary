@@ -40,7 +40,7 @@ public class MemberController {
     }
 
     // 이메일이나 닉네임이 이미 존재하는지 확인
-    @GetMapping("/check")
+    @PostMapping("/check")
     @ApiOperation(value = "이메일 또는 이름 존재 확인", notes = "email 또는 nickname이 이미 존재하는지 확인합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "사용하지 않음"),
