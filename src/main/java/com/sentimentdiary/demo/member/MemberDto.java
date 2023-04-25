@@ -26,6 +26,9 @@ public class MemberDto {
         @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*\\W)(?=\\S+$).{8,}", message = "비밀번호는 8자 이상, 영문 소문자, 숫자, 특수문자를 적어도 1개 포함시켜주세요")
         @ApiModelProperty(notes = "비밀번호", required = true, example = "qwer1234!!")
         private String pw;
+        @NotBlank(message = "패스워드를 입력해주세요.")
+        @ApiModelProperty(notes = "닉네임", required = true, example = "홍길동")
+        private String nickName;
     }
 
     @Getter
@@ -47,10 +50,6 @@ public class MemberDto {
     @NoArgsConstructor
     @ApiModel("Member Check")
     public static class Check {
-        @NotBlank(message = "별명을 입력해주세요.")
-        @ApiModelProperty(notes = "이름", required = true, example = "홍길동")
-        private String nickName;
-
         @Email
         @ApiModelProperty(notes = "이메일", required = true, example = "test@gmail.com")
         private String email;

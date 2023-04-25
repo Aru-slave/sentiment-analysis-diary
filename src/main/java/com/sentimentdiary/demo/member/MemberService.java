@@ -34,7 +34,7 @@ public class MemberService {
         newMember.setPw(encryptedPassword);
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         newMember.setRoles(roles);
-        newMember.setNickName(member.getEmail().split("@")[0]);
+        newMember.setNickName(member.getNickName());
         newMember.setEmail(member.getEmail());
         newMember.setGoogle(false);
         Member savedMember = memberRepository.save(newMember);
@@ -112,11 +112,6 @@ public class MemberService {
 
 
     public Boolean check(MemberDto.Check check) {
-        if (check.getNickName() != null) {
-            if (memberRepository.findByNickName(check.getNickName()).isPresent()) {
-                throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
-            }
-        }
         if (check.getEmail() != null) {
             if (memberRepository.findByEmail(check.getEmail()).isPresent()) {
                 throw new BusinessLogicException(ExceptionCode.EMAIL_EXIST);
