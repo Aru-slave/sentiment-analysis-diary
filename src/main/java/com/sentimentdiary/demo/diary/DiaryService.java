@@ -32,6 +32,7 @@ public class DiaryService {
         diary.setEmotion(findEmotion(diary.getContent())); // 감정점수 분석
         diary.setKeywords(findKeywords(diary.getContent())); // 키워드 분석
         diary.setMember(member);
+        diary.setCreatedAt(diary.getCreatedAt());
         member.addDiary(diary);
 
         return diaryRepository.save(diary);
@@ -49,7 +50,7 @@ public class DiaryService {
             throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
         } else if (Objects.equals(findVerifyDiary(diary.getDiaryId()).getMember().getMemberId(), memberService.getLoginMember().getMemberId())) {
             Diary findDiary = findVerifyDiary(diary.getDiaryId());
-            findDiary.setModifiedAt(LocalDateTime.now());
+            findDiary.setModifiedAt(LocalDate.now());
             Optional.ofNullable(diary.getTitle())
                     .ifPresent(findDiary::setTitle);
             Optional.ofNullable(diary.getContent())

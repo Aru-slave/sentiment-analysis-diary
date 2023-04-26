@@ -41,10 +41,10 @@ public class MemberController {
 
     // 이메일이나 닉네임이 이미 존재하는지 확인
     @PostMapping("/check")
-    @ApiOperation(value = "이메일 또는 이름 존재 확인", notes = "email 또는 nickname이 이미 존재하는지 확인합니다.")
+    @ApiOperation(value = "이메일 존재 확인", notes = "email이 이미 존재하는지 확인합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "사용하지 않음"),
-            @ApiResponse(code = 417, message = "NickName is exists")
+            @ApiResponse(code = 419, message = "Email is exists")
     })
     public ResponseEntity<Boolean> checkDetail(@RequestBody MemberDto.Check requestBody){
         return new ResponseEntity<Boolean>(memberService.check(requestBody), HttpStatus.OK);
