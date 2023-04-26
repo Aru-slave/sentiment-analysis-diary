@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +25,10 @@ public class DiaryDto {
         @NotBlank(message = "내용을 입력해주세요.")
         @ApiModelProperty(notes = "내용", required = true, example = "저녁에 맛있는 치킨을 먹어서 기운이 났다.")
         private String content;
+        @NotBlank(message = "날짜 입력해주세요.")
+
+        @ApiModelProperty(notes = "날짜", required = true, example = "2023-04-26")
+        private LocalDate createdAt;
     }
 
     @Getter
@@ -69,9 +73,9 @@ public class DiaryDto {
         private Map<String, Integer> keywords = new HashMap<>();
 
         @ApiModelProperty(notes = "생성 날짜", required = true, example = "2023-01-09T18:00:00")
-        private LocalDateTime createdAt;
+        private LocalDate createdAt;
 
         @ApiModelProperty(notes = "수정 날짜", required = true, example = "2023-01-09T18:00:00")
-        private LocalDateTime modifiedAt;
+        private LocalDate modifiedAt;
     }
 }
