@@ -61,6 +61,7 @@ jobs:
         script: |
           sudo docker stop $(docker ps -q --filter ancestor=choijihyeon/diary)
           sudo docker rm $(docker ps -a -q --filter ancestor=choijihyeon/diary)
+          sudo docker rmi choijihyeon/diary
           sudo docker pull choijihyeon/diary
           sudo docker run -it -d \ -p 8080:8080 \ -e JWT_SECRET_KEY=$JWT_SECRET_KEY \ -e OPENAI_KEY=$OPENAI_KEY \ choijihyeon/diary
     
