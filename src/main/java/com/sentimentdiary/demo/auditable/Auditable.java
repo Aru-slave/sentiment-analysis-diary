@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable {
-    @CreatedDate
+
     @Column(name = "CREATED_AT", updatable = false)
     private LocalDate createdAt;
 
