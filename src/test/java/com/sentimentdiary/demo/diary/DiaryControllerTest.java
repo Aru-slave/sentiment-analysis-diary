@@ -53,8 +53,8 @@ public class DiaryControllerTest extends JwtMockBean {
         response.setContent("내용");
         response.setEmotion(-2);
         response.setKeywords(keywords);
-        response.setCreatedAt(LocalDateTime.now());
-        response.setModifiedAt(LocalDateTime.now());
+        response.setCreatedAt(LocalDate.parse("2023-04-20"));
+        response.setModifiedAt(LocalDate.now());
 
         responses = new ArrayList<>();
         responses.add(response);
@@ -69,11 +69,12 @@ public class DiaryControllerTest extends JwtMockBean {
         // given
         DiaryDto.Post post = new DiaryDto.Post(
                 "제목",
-                "내용"
+                "내용",
+                LocalDate.parse("2023-04-20")
         );
 
         given(diaryMapper.diaryPostDtoToDiary(Mockito.any(DiaryDto.Post.class))).willReturn(new Diary());
-        given((diaryService.createDiary(Mockito.any(Diary.class)))).willReturn(new Diary());
+        given((diaryService.createDiary(Mockito.any(DiaryDto.Post.class)))).willReturn(new Diary());
         given(diaryMapper.diaryToDiaryResponseDto(Mockito.any(Diary.class))).willReturn(response);
 
         // when

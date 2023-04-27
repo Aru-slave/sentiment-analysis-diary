@@ -28,7 +28,7 @@ public class DiaryDto {
         @NotBlank(message = "날짜 입력해주세요.")
 
         @ApiModelProperty(notes = "날짜", required = true, example = "2023-04-26")
-        private LocalDate createdAt;
+        private String createdAt;
     }
 
     @Getter
