@@ -38,6 +38,7 @@ public class DiaryController {
             @ApiResponse(code = 402, message = "로그인 필요")
     })
     public ResponseEntity<DiaryDto.Response> postDiary(@RequestBody DiaryDto.Post post) {
+
         Diary diary = diaryService.createDiary(post);
         DiaryDto.Response response = diaryMapper.diaryToDiaryResponseDto(diary);
 

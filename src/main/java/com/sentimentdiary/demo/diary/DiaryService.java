@@ -34,6 +34,9 @@ public class DiaryService {
         diary.setKeywords(findKeywords(requestBody.getContent())); // 키워드 분석
         diary.setMember(member);
         diary.setCreatedAt(LocalDate.parse(requestBody.getCreatedAt()));
+        diary.setModifiedAt(LocalDate.now());
+        diary.setContent(requestBody.getContent());
+        diary.setTitle(requestBody.getTitle());
         member.addDiary(diary);
 
         return diaryRepository.save(diary);
