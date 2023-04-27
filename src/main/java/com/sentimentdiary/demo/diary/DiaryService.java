@@ -33,7 +33,7 @@ public class DiaryService {
         diary.setEmotion(findEmotion(requestBody.getContent())); // 감정점수 분석
         diary.setKeywords(findKeywords(requestBody.getContent())); // 키워드 분석
         diary.setMember(member);
-        diary.setCreatedAt(requestBody.getCreatedAt());
+        diary.setCreatedAt(LocalDate.parse(requestBody.getCreatedAt()));
         member.addDiary(diary);
 
         return diaryRepository.save(diary);
