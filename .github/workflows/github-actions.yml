@@ -18,7 +18,7 @@ jobs:
     
    # Docker 이미지 Build (2)
     - name: docker image build
-      run: docker build --build-arg JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} --build-arg OPENAI_KEY=${{ secrets.OPENAI_KEY }} -t myimage .
+      run: docker build --build-arg JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} --build-arg OPENAI_KEY=${{ secrets.OPENAI_KEY }} -t choijihyeon/diary .
     
     # DockerHub Login (3)
     - name: Docker Hub 로그인 # (3)
@@ -63,10 +63,7 @@ jobs:
           sudo docker rm $(docker ps -a -q --filter ancestor=choijihyeon/diary)
           sudo docker rmi choijihyeon/diary
           sudo docker pull choijihyeon/diary
-          sudo docker run -it -d -p 8080:8080 \
-          -e JWT_SECRET_KEY=$JWT_SECRET_KEY \
-          -e OPENAI_KEY=$OPENAI_KEY \
-          choijihyeon/diary
+          sudo docker run -it -d -p 8080:8080 choijihyeon/diary
 
 
     
