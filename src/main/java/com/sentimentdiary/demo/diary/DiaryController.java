@@ -86,11 +86,11 @@ public class DiaryController {
     // 날짜 및 멤버별 다이어리 조회
     @GetMapping("/date")
     @ApiOperation(value = "날짜 및 멤버별 다이어리 단일 조회", notes = "날짜 및 멤버별 대한 다이어리들의 정보를 반환합니다.")
-    public ResponseEntity<List<DiaryDto.Response>> getDiariesByDate(
+    public ResponseEntity<DiaryDto.Response> getDiariesByDate(
             @ApiParam(name = "createdAt", value = "날짜", required = true, example = "2023-04-15")
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate createdAt) {
-        List<Diary> diaries = diaryService.findDiaries(createdAt);
-        List<DiaryDto.Response> response = diaryMapper.diariesToStudyResponseDto(diaries);
+        Diary diary = diaryService.findDiary(createdAt);
+        DiaryDto.Response response = diaryMapper.diaryToDiaryResponseDto(diary);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -93,20 +93,12 @@ public class DiaryService {
     }
 
     // 날짜 및 멤버별 다이어리 조회
-    public List<Diary> findDiaries(LocalDate createdAt) {
+    public Diary findDiary(LocalDate createdAt) {
         Member member = memberService.getLoginMember(); //로그인 한 상태가 아닐 시 에러 메시지 출력
         if (member == null) {
             throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
         }
-
-        List<Diary> diaries = diaryRepository.findByMember(member);
-        for(Diary diary : diaries) {
-            if(diary.getCreatedAt().getDayOfMonth() != createdAt.getDayOfMonth()) diaries.remove(diary);
-            else if(diary.getCreatedAt().getMonth() != createdAt.getMonth()) diaries.remove(diary);
-            else if(diary.getCreatedAt().getYear() != createdAt.getYear()) diaries.remove(diary);
-        }
-
-        return diaries;
+        return diaryRepository.findByCreatedAt(createdAt).get();
     }
 
     public Diary findDiary(long diaryId) {
