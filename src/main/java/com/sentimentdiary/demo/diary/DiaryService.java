@@ -98,7 +98,7 @@ public class DiaryService {
         if (member == null) {
             throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
         }
-        return diaryRepository.findByCreatedAt(createdAt).get();
+        return diaryRepository.findByCreatedAtAndMemberMemberId(createdAt,member.getMemberId()).get();
     }
 
     public Diary findDiary(long diaryId) {
