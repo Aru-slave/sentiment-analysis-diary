@@ -70,7 +70,7 @@ public class DiaryControllerTest extends JwtMockBean {
         DiaryDto.Post post = new DiaryDto.Post(
                 "제목",
                 "내용",
-                LocalDate.parse("2023-04-20")
+                "2023-04-20"
         );
 
         given(diaryMapper.diaryPostDtoToDiary(Mockito.any(DiaryDto.Post.class))).willReturn(new Diary());

@@ -25,8 +25,8 @@ public class DiaryDto {
         @NotBlank(message = "내용을 입력해주세요.")
         @ApiModelProperty(notes = "내용", required = true, example = "저녁에 맛있는 치킨을 먹어서 기운이 났다.")
         private String content;
-        @NotBlank(message = "날짜 입력해주세요.")
 
+        @NotBlank(message = "날짜 입력해주세요.")
         @ApiModelProperty(notes = "날짜", required = true, example = "2023-04-26")
         private String createdAt;
     }
