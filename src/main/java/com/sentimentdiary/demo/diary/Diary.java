@@ -30,7 +30,7 @@ public class Diary extends Auditable {
 
     @Column
     @ElementCollection
-    private Map<String, Integer> keywords = new HashMap<>();
+    private List<String> keywords = new LinkedList<>();
 
     @JsonIgnore
     @ManyToOne(optional = false)

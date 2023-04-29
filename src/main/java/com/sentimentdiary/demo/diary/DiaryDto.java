@@ -10,6 +10,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class DiaryDto {
@@ -70,7 +72,7 @@ public class DiaryDto {
         private int emotion;
 
         @ApiModelProperty(notes = "키워드", required = true, example = "{저녁, 1}")
-        private Map<String, Integer> keywords = new HashMap<>();
+        private List<String> keywords = new LinkedList<>();
 
         @ApiModelProperty(notes = "생성 날짜", required = true, example = "2023-01-09T18:00:00")
         private LocalDate createdAt;

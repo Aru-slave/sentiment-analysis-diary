@@ -71,7 +71,7 @@ public class DiaryController {
 
     // 날짜 및 멤버별 다이어리 조회
     @GetMapping("/date")
-    @ApiOperation(value = "날짜 및 멤버별 다이어리 단일 조회", notes = "날짜 및 멤버별 대한 다이어리들의 정보를 반환합니다.")
+    @ApiOperation(value = "날짜별 다이어리 단일 조회", notes = "날짜 및 멤버별 대한 다이어리들의 정보를 반환합니다.")
     public ResponseEntity<DiaryDto.Response> getDiariesByDate(
             @ApiParam(name = "createdAt", value = "날짜", required = true, example = "2023-04-15")
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate createdAt) {
