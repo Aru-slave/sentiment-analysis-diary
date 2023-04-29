@@ -1,0 +1,73 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy: 
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    # Spring Boot 어플리케이션 Build (1)
+    - name: Spring Boot Build
+      run: ./gradlew clean build --exclude-task test
+    
+   # Docker 이미지 Build (2)
+    - name: docker image build
+      run: docker build --build-arg JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} --build-arg OPENAI_KEY=${{ secrets.OPENAI_KEY }} -t choijihyeon/diary .
+    
+    # DockerHub Login (3)
+    - name: Docker Hub 로그인 # (3)
+      uses: docker/login-action@v2
+      with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # Docker Hub push (4)
+    - name: docker Hub push
+      run: docker push choijihyeon/diary
+      
+    # GET GitHub IP (5)
+    - name: get GitHub IP 
+      id: ip
+      uses: haythem/public-ip@v1.2
+      
+    # Configure AWS Credentials (6) - AWS 접근 권한 취득(IAM)
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with: 
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+    
+    # Add github ip to AWS (7)
+    - name: Add GitHub IP to AWS
+      run: |
+        aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+    
+    # AWS EC2 Server Connect & Docker 명령어 실행 (8)
+    - name: AWS EC2 Connection
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ssm-user
+        password: ${{ secrets.EC2_PASSWORD }} 
+        port: ${{ secrets.EC2_SSH_PORT }}
+        timeout: 60s
+        script: |
+          sudo docker stop $(docker ps -q --filter ancestor=choijihyeon/diary)
+          sudo docker rm $(docker ps -a -q --filter ancestor=choijihyeon/diary)
+          sudo docker rmi choijihyeon/diary
+          sudo docker pull choijihyeon/diary
+          sudo docker run -it -d -p 8080:8080 choijihyeon/diary
+
+
+    
+    # REMOVE Github IP FROM security group (9)
+    - name: Remove IP FROM security group
+      run: |
+        aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32

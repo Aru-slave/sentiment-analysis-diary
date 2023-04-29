@@ -41,6 +41,15 @@ public class DiaryService {
 
         return diaryRepository.save(diary);
     }
+    public DiaryDto.Response createDiary2(Diary diary) {
+        DiaryDto.Response response = new DiaryDto.Response();
+        response.setTitle(diary.getTitle());
+        response.setContent(diary.getContent());
+        response.setEmotion(findEmotion(diary.getContent())); // 감정점수 분석
+        response.setKeywords(findKeywords(diary.getContent())); // 키워드 분석
+
+        return response;
+    }
 //    public Diary analyzeDiary(long diaryId) {
 //        Diary diary = findDiary(diaryId);
 //        diary.setEmotion(findEmotion(diary.getContent())); // 감정점수 분석
@@ -127,5 +136,6 @@ public class DiaryService {
 
 
         return Integer.parseInt(result);
+
     }
 }

@@ -45,6 +45,20 @@ public class DiaryController {
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
+    // 감정 및 키워드 분석 테스트 controller
+//    @PostMapping("/test")
+//    @ApiOperation(value = "다이어리 생성", notes = "새로운 다이어리를 생성합니다.")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 201, message = "다이어리 생성 완료"),
+//            @ApiResponse(code = 402, message = "로그인 필요")
+//    })
+//    public ResponseEntity<DiaryDto.Response> postDiary2(@RequestBody DiaryDto.Post post) {
+//        Diary diary = diaryMapper.diaryPostDtoToDiary(post);
+//        DiaryDto.Response response = diaryService.createDiary2(diary);
+//
+//        return new ResponseEntity(response, HttpStatus.CREATED);
+//    }
+
     //감정, 키워드 분석
 //    @GetMapping("/analyze/{diary-id}")
 //    @ApiOperation(value = "감정, 키워드 분석", notes = "다이어리의 감정 및 키워드를 분석한 결과를 반환합니다.")

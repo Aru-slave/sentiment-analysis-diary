@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  diary:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database-2.cwupiqhxm1dr.ap-northeast-2.rds.amazonaws.com:3306/diary?serverTimezone=Asia/Seoul
+      - SPRING_DATASOURCE_USERNAME=main
+      - SPRING_DATASOURCE_PASSWORD=chl9584!??
+      - G_CLIENT_ID=${env.G_CLIENT_ID}
+      - G_CLIENT_SECRET=${env.G_CLIENT_SECRET}
+      - JWT_SECRET_KEY=${env.JWT_SECRET_KEY}
+      - OPENAI_KEY=${env.OPENAI_KEY}
+      - ADMIN_MAIL_ADDRESS=admin@gmail.com
+      - ACCESS_TOKEN_EXPIRATION_MINUTES=120
+      - REFRESH_TOKEN_EXPIRATION_MINUTES=28800
+    depends_on:
+      - database
+    networks:
+      - diary-network
+
+  database:
+    image: mysql:8.0.25
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root1234
+      - MYSQL_DATABASE=diary
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - diary-network
+
+networks:
+  diary-network:
+
+volumes:
+  db-data:
