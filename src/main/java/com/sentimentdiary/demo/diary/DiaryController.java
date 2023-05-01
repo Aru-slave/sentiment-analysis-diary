@@ -18,7 +18,9 @@ import javax.print.attribute.standard.MediaSize;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.time.temporal.WeekFields.ISO;
 
@@ -29,6 +31,7 @@ import static java.time.temporal.WeekFields.ISO;
 public class DiaryController {
     private final DiaryService diaryService;
     private final DiaryMapper diaryMapper;
+    private final DiaryRepository diaryRepository;
 
     // 다이어리 생성
     @PostMapping
@@ -132,5 +135,22 @@ public class DiaryController {
             @PathVariable("diary-id") @Positive long diaryId) {
         diaryService.deleteDiary(diaryId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    //기간으로 다이어리 조회
+    @GetMapping("/term")
+    @ApiOperation(value = "기간내 다이어리 조회", notes = "기간내 로그인한 유저가 작성한 다이어리 데이터들과 키워드 등장 횟수를 반환합니다.")
+    public ResponseEntity<Map<String, Object>> getDiariesWithTerm(
+            @ApiParam(name = "startDate", value = "검색 시작 날짜", required = true, example = "2023-04-01")
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @ApiParam(name = "endDate", value = "검색 끝 날짜", required = true, example = "2023-04-30")
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+        List<Diary> diaries = diaryService.findDiaryWithTerm(startDate,endDate);
+        List<DiaryDto.diaryAnalysis> response = diaryMapper.diariesToAnalysisResponseDto(diaries);
+        Map<String, Integer> keyWords = diaryService.findDiaryKeyWordsWithTerm(diaries);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("diaries", response);
+        resultMap.put("keyWords", keyWords);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }
