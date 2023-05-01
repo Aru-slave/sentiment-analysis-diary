@@ -55,18 +55,15 @@ public class DiaryService {
         } else if (Objects.equals(findVerifyDiary(diary.getDiaryId()).getMember().getMemberId(), memberService.getLoginMember().getMemberId())) {
             Diary findDiary = findVerifyDiary(diary.getDiaryId());
             findDiary.setModifiedAt(LocalDate.now());
-            Optional.ofNullable(diary.getTitle())
-                    .ifPresent(findDiary::setTitle);
-            Optional.ofNullable(diary.getContent())
-                    .ifPresent(findDiary::setContent);
+            Optional.ofNullable(diary.getTitle()).ifPresent(findDiary::setTitle);
+            Optional.ofNullable(diary.getContent()).ifPresent(findDiary::setContent);
 
             return diaryRepository.save(findDiary);
         } else throw new BusinessLogicException(ExceptionCode.PERMISSION_DENIED);
     }
 
     public void deleteDiary(Long diaryId) {
-        if (memberService.getLoginMember() == null)
-            throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
+        if (memberService.getLoginMember() == null) throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
         Diary diary = findVerifyDiary(diaryId);
         if (Objects.equals(diary.getMember().getMemberId(), memberService.getLoginMember().getMemberId()))
             diaryRepository.delete(diary);
@@ -99,19 +96,17 @@ public class DiaryService {
 
     private Diary findVerifyDiary(long diaryId) {
         Optional<Diary> optionalDiary = diaryRepository.findById(diaryId);
-        return optionalDiary.orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.DIARY_NOT_FOUND));
+        return optionalDiary.orElseThrow(() -> new BusinessLogicException(ExceptionCode.DIARY_NOT_FOUND));
     }
 
     // 키워드 추출하기
     public List<String> findKeywords(String question) {
         question = "\"" + question + "\" 문단에 포함되어 있는 단어들 중 핵심 키워드라고 판단되는 단어들을 추출해줘, 단어는 조사를 뺀 사전에 등재되어 있는 명사만 해당돼.";
         String result = chatgptService.sendMessage(question);
-        String[] str = result.contains("\n\n") ?
-                result.split("\n\n")[1].split(",") : result.split(",");
+        String[] str = result.contains("\n\n") ? result.split("\n\n")[1].split(",") : result.split(",");
         List<String> list = new ArrayList<>();
-        for(int i = 0; i < str.length; i++){
-            list.add(str[i].replace(" ",""));
+        for (int i = 0; i < str.length; i++) {
+            list.add(str[i].replace(" ", ""));
         }
 
         return list;
@@ -123,9 +118,30 @@ public class DiaryService {
         String result = chatgptService.sendMessage(question);
         result = result.replaceAll("[^\\d+-]", "").replaceAll("\\r|\\n", "");
 
-
-
-
         return Integer.parseInt(result);
     }
+    public List<Diary> findDiaryWithTerm(LocalDate startDate,LocalDate endDate) {
+        Member member = memberService.getLoginMember(); //로그인 한 상태가 아닐 시 에러 메시지 출력
+        if (member == null) {
+            throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
+        }
+        return diaryRepository.findByCreatedAtBetweenAndMemberMemberIdOrderByCreatedAtAsc(startDate,endDate,member.getMemberId());
+    }
+    public Map<String,Integer> findDiaryKeyWordsWithTerm(List<Diary> diaries) {
+        Member member = memberService.getLoginMember(); //로그인 한 상태가 아닐 시 에러 메시지 출력
+        if (member == null) {
+            throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
+        }
+        Map<String,Integer> keyWords = new HashMap<>();
+        for(int i = 0; i < diaries.size(); i++){
+            List<String> diaryKeywords = diaries.get(i).getKeywords();
+            for (String keyword : diaryKeywords) {
+                keyWords.put(keyword, keyWords.getOrDefault(keyword, 0) + 1);
+            }
+        }
+        return keyWords;
+    }
+
+
+
 }
