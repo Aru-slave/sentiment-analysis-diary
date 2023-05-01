@@ -12,6 +12,8 @@ public interface DiaryMapper {
     Diary diaryPostDtoToDiary(DiaryDto.Post post);
     List<DiaryDto.Response> diariesToStudyResponseDto(List<Diary> diaries);
 
+    List<DiaryDto.diaryAnalysis> diariesToAnalysisResponseDto(List<Diary> diaries);
+
     default Diary diaryPatchDtoToDiary(DiaryDto.Patch diaryPatchDto) {
         Diary diary = new Diary();
         diary.setDiaryId(diaryPatchDto.getDiaryId());

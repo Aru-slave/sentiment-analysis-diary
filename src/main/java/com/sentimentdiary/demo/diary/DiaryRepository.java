@@ -12,7 +12,10 @@ import java.util.Optional;
 public interface DiaryRepository extends JpaRepository<Diary,Long> {
     Optional<Diary> findById(Long diaryId);
     Optional<Diary> findByCreatedAtAndMemberMemberId(LocalDate createdAt, long memberId);
+
     Page<Diary> findByMember(Member member, PageRequest pageRequest);
 
     List<Diary> findByMember(Member member);
+    List<Diary> findByCreatedAtBetweenAndMemberMemberIdOrderByCreatedAtAsc( LocalDate startDateTime,
+                                        LocalDate endDateTime,long memberId);
 }

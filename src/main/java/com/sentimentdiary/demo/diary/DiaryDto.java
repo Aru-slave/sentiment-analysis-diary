@@ -9,10 +9,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class DiaryDto {
     @Getter
@@ -79,5 +77,21 @@ public class DiaryDto {
 
         @ApiModelProperty(notes = "수정 날짜", required = true, example = "2023-01-09T18:00:00")
         private LocalDate modifiedAt;
+    }
+    @NoArgsConstructor
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @ApiModel("Diary analysis Response")
+    public static class diaryAnalysis {
+        @ApiModelProperty(notes = "다이어리 식별자", required = true, example = "1")
+        private long diaryId;
+
+        @ApiModelProperty(notes = "감정", required = true, example = "9")
+        private int emotion;
+
+        @ApiModelProperty(notes = "생성 날짜", required = true, example = "2023-01-09T18:00:00")
+        private LocalDate createdAt;
+
     }
 }
