@@ -2,10 +2,7 @@ package com.sentimentdiary.demo.member;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -29,6 +26,7 @@ public class MemberDto {
         @NotBlank(message = "패스워드를 입력해주세요.")
         @ApiModelProperty(notes = "닉네임", required = true, example = "홍길동")
         private String nickName;
+
     }
 
     @Getter
@@ -53,6 +51,7 @@ public class MemberDto {
         @Email
         @ApiModelProperty(notes = "이메일", required = true, example = "test@gmail.com")
         private String email;
+
     }
 
     @Setter
