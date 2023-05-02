@@ -43,8 +43,7 @@ public class DiaryControllerTest extends JwtMockBean {
 
     @BeforeAll
     public static void initAll() {
-        Map<String, Integer> keywords = new HashMap<>();
-        keywords.put("내용", 1);
+        List<String> keywords = new ArrayList<>();
         response = new DiaryDto.Response();
         response.setDiaryId(1);
         response.setMemberId(1);
@@ -122,7 +121,7 @@ public class DiaryControllerTest extends JwtMockBean {
     public void getDiariesByDateTest() throws Exception {
         // given
         LocalDate createdAt = LocalDate.now();
-        given(diaryService.findDiaries(createdAt)).willReturn(new ArrayList<>());
+        given(diaryService.findDiary(createdAt)).willReturn(new Diary());
         given(diaryMapper.diariesToStudyResponseDto(Mockito.anyList())).willReturn(responses);
 
         // when

@@ -29,6 +29,10 @@ public class DiaryService {
         if (member == null) {
             throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
         }
+        if(diaryRepository.findByCreatedAtAndMemberMemberId(LocalDate.parse(requestBody.getCreatedAt()),member.getMemberId()) != null){
+            throw new BusinessLogicException(ExceptionCode.DIARY_IS_EXIST);
+        }
+
         Diary diary = new Diary();
         diary.setEmotion(findEmotion(requestBody.getContent())); // 감정점수 분석
         diary.setKeywords(findKeywords(requestBody.getContent())); // 키워드 분석
@@ -95,7 +99,10 @@ public class DiaryService {
         if (member == null) {
             throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
         }
-        return diaryRepository.findByCreatedAtAndMemberMemberId(createdAt, member.getMemberId()).get();
+        Diary diary = diaryRepository.findByCreatedAtAndMemberMemberId(createdAt, member.getMemberId());
+        if(diary != null)
+            return diary;
+        else throw new BusinessLogicException(ExceptionCode.DIARY_NOT_FOUND);
     }
 
     public Diary findDiary(long diaryId) {

@@ -10,17 +10,9 @@ public enum ExceptionCode {
     PERMISSION_DENIED(404,"check, please"),
     FULL_MEMBER(405,"Full member"),
 
-    NOT_ALLOW(406,"MAX NUM must bigger than 2"),
     LOCATION_NOT_FOUND(407, "Location not found"),
 
-    DECLARE_STATUS_TRUE(408,"Declare Status"),
-
-    CHATROOM_ID_NOT_MATCH_BOARD_ID(409,"chatRoomId don't match boardId"),
-    SORTBY_NOT_FOUND(410, "SortBy not found"),
-    BOARD_NOT_DELETE(411, "Board not delete"),
-    ROLE_NOT_ADMIN(412, "Role not admin"),
-    REPORT_NOT_FOUND(413, " Report not found"),
-    RANGE_NOT_FOUND(414, "Range not found"),
+    DIARY_IS_EXIST(408,"Diary is exist"),
     BAN(415, "Bye"),
     DIARY_NOT_FOUND(416,"Diary not found"),
     NICKNAME_EXIST(417,"NickName is exists"),
