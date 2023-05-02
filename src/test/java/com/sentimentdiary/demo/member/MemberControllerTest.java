@@ -64,7 +64,8 @@ public class MemberControllerTest extends JwtMockBean {
         // given
         MemberDto.Post post = new MemberDto.Post(
                 "test@gmail.com",
-                "1234ASdf!!"
+                "1234ASdf!!",
+                "테스트"
         );
 
         given(memberMapper.memberPostToMember(Mockito.any(MemberDto.Post.class))).willReturn(new Member());
@@ -93,7 +94,6 @@ public class MemberControllerTest extends JwtMockBean {
         // given
         MemberDto.Check check = new MemberDto.Check();
         check.setEmail("test@gmail.com");
-        check.setNickName("사용자");
 
         given(memberService.check(Mockito.any(MemberDto.Check.class))).willReturn(true);
 
