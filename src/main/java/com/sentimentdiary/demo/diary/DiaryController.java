@@ -120,8 +120,7 @@ public class DiaryController {
             @ApiParam(name = "diary-id", value = "다이어리 식별자", required = true, example = "1")
             @PathVariable("diary-id") @Positive long diaryId,
             @RequestBody DiaryDto.Patch patch) {
-        Diary diary = diaryMapper.diaryPatchDtoToDiary(patch);
-        diary = diaryService.updateDiary(diary);
+        Diary diary = diaryService.updateDiary(patch,diaryId);
         DiaryDto.Response response = diaryMapper.diaryToDiaryResponseDto(diary);
 
         return new ResponseEntity(response, HttpStatus.OK);
