@@ -168,14 +168,14 @@ public class DiaryControllerTest extends JwtMockBean {
     @DisplayName("다이어리 수정")
     public void patchDiaryTest() throws Exception {
         // given
-        int diaryId = 1;
+        long diaryId = 1;
         DiaryDto.Patch patch = new DiaryDto.Patch(
                 1,
                 "제목",
                 "내용"
         );
         given(diaryMapper.diaryPatchDtoToDiary(Mockito.any(DiaryDto.Patch.class))).willReturn(new Diary());
-        given(diaryService.updateDiary(Mockito.any(Diary.class))).willReturn(new Diary());
+        given(diaryService.updateDiary(Mockito.any(),diaryId)).willReturn(new Diary());
         given(diaryMapper.diaryToDiaryResponseDto(Mockito.any(Diary.class))).willReturn(response);
 
         // when

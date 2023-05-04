@@ -53,23 +53,32 @@ public class DiaryService {
 //    }
 
 
-    public Diary updateDiary(Diary diary) {
-        if (memberService.getLoginMember() == null) {
+    public Diary updateDiary(DiaryDto.Patch patch, Long diaryId) {
+        Member member = memberService.getLoginMember();
+        if (member == null)
             throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
-        } else if (Objects.equals(findVerifyDiary(diary.getDiaryId()).getMember().getMemberId(), memberService.getLoginMember().getMemberId())) {
-            Diary findDiary = findVerifyDiary(diary.getDiaryId());
-            findDiary.setModifiedAt(LocalDate.now());
-            Optional.ofNullable(diary.getTitle()).ifPresent(findDiary::setTitle);
-            Optional.ofNullable(diary.getContent()).ifPresent(findDiary::setContent);
+            Diary diary = findDiary(diaryId);
+        if (Objects.equals(member.getMemberId(),diary.getMember().getMemberId())) {
+            diary.setModifiedAt(LocalDate.now());
+            Optional.ofNullable(patch.getTitle()).ifPresent(diary::setTitle);
+            Optional.ofNullable(patch.getContent()).ifPresent(diary::setContent);
+            Optional.ofNullable(patch.getContent()).ifPresent(content -> {
+                diary.setContent(content);
 
-            return diaryRepository.save(findDiary);
+                // content가 변경될 때마다 감정과 키워드를 다시 계산하고 저장합니다.
+                diary.setKeywords(findKeywords(content));
+                diary.setEmotion(findEmotion(content));
+            });
+
+            return diaryRepository.save(diary);
         } else throw new BusinessLogicException(ExceptionCode.PERMISSION_DENIED);
     }
 
     public void deleteDiary(Long diaryId) {
-        if (memberService.getLoginMember() == null) throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
+        Member member = memberService.getLoginMember();
+        if (member == null) throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
         Diary diary = findVerifyDiary(diaryId);
-        if (Objects.equals(diary.getMember().getMemberId(), memberService.getLoginMember().getMemberId()))
+        if (Objects.equals(diary.getMember().getMemberId(), member.getMemberId()))
             diaryRepository.delete(diary);
         else throw new BusinessLogicException(ExceptionCode.PERMISSION_DENIED);
     }
@@ -108,7 +117,7 @@ public class DiaryService {
 
     // 키워드 추출하기
     public List<String> findKeywords(String question) {
-        question = "\"" + question + "\" 문단에 포함되어 있는 단어들 중 핵심 키워드라고 판단되는 단어들을 추출해줘, 단어는 조사를 뺀 사전에 등재되어 있는 명사만 해당돼.";
+        question = "\"" + question + "\" 문단에 포함되어 있는 단어들 중 중요도가 높은 명사라고 판단되는 단어들을 추출해줘. 반환 형식은 명사,";
         String result = chatgptService.sendMessage(question);
         String[] str = result.contains("\n\n") ? result.split("\n\n")[1].split(",") : result.split(",");
         List<String> list = new ArrayList<>();
