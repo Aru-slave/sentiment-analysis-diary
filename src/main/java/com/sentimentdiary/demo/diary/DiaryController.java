@@ -28,7 +28,7 @@ import static java.time.temporal.WeekFields.ISO;
 @RequestMapping("api/diary")
 @RequiredArgsConstructor
 @ApiOperation(value = "다이어리 정보 API", tags = {"Dairy-Controller"}) // Swagger
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DiaryController {
     private final DiaryService diaryService;
     private final DiaryMapper diaryMapper;
