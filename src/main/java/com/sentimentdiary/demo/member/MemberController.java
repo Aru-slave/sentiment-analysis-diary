@@ -21,7 +21,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @ApiOperation(value = "회원 정보 API", tags = {"Member-Controller"}) // Swagger
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
