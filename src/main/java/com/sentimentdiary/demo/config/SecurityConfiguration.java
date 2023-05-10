@@ -87,9 +87,9 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("https://sentiment-analysis-diary.vercel.app", "http://localhost:3000", "https://localhost:3001", "https://localhost:3443"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("x-auth-token", "Authorization", "Refresh", "heart-beat"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token", "Authorization", "Refresh", "heart-beat"));
         configuration.setAllowCredentials(true);
 
